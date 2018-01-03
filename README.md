@@ -1,3 +1,3 @@
-# Editor ArqID ETrade
+# Change ArqID
 
-Script para alterar automaticamente a instancia no ArqID
+Script para alterar automaticamente a instancia do sqlserver no ArqID.txt
