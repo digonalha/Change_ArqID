@@ -1,12 +1,13 @@
 """Tela da aplicaçao de alteracao de arqid"""
-from tkinter import Frame, Entry, Label, Button, Tk
+from tkinter import Frame, Entry, Label, Button
 import importlib
 import change_arqid
 
-class Application:
+class CreateInterface:
     """Montando a tela"""
     # pylint: disable=too-many-instance-attributes
     # Refatorarei essa classe no futuro. Dont be afraid may frendi
+
     def __init__(self, master=None):
         self.default_font = ("Segoe", "11")
         self.font_input = ("Arial", "10")
@@ -96,13 +97,4 @@ class Application:
         resultado = change_arqid.alterar_arqid()
         self.mensagem['text'] = resultado
         importlib.reload(change_arqid) #gambiarra, descobrir outra forma de tratar isso
-
-if __name__ == '__main__':
-    APP = Tk()
-    APP.title("Change ArqID - v0.1")
-    X = (APP.winfo_screenwidth() - APP.winfo_reqwidth()) / 2
-    Y = (APP.winfo_screenheight() - APP.winfo_reqheight()) / 2
-    APP.geometry("+%d+%d" % (X, Y))
-    APP.resizable(0, 0)
-    Application(APP)
-    APP.mainloop()
+        
