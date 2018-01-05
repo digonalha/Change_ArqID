@@ -1,7 +1,10 @@
 """Tela da aplicaçao de alteracao de arqid"""
 from tkinter import Frame, Entry, Label, Button
 import importlib
-import change_arqid
+import sys
+from modules import change_arqid
+
+sys.path.append("..")
 
 class CreateInterface:
     """Montando a tela"""
@@ -14,6 +17,7 @@ class CreateInterface:
         self.create_title(master)
         self.create_frames(master)
         self.create_buttons(master)
+        self.load_paths()
 
     def create_title(self, master=None):
         """Criando o titulo da aplicacao"""
@@ -52,10 +56,10 @@ class CreateInterface:
         self.new_label = Label(self.txt_server, text="Servidor     ", font=self.default_font)
         self.new_label.pack(side='left')
 
-        self.new_path = Entry(self.txt_server)
-        self.new_path["width"] = 45
-        self.new_path["font"] = self.font_input
-        self.new_path.pack(side='left')
+        self.instance_server = Entry(self.txt_server)
+        self.instance_server["width"] = 45
+        self.instance_server["font"] = self.font_input
+        self.instance_server.pack(side='left')
 
         #--------------------------------------------
 
@@ -66,10 +70,10 @@ class CreateInterface:
         self.new_label = Label(self.txt_station, text="Estaçao     ", font=self.default_font)
         self.new_label.pack(side='left')
 
-        self.new_path = Entry(self.txt_station)
-        self.new_path["width"] = 45
-        self.new_path["font"] = self.font_input
-        self.new_path.pack(side='left')
+        self.instance_station = Entry(self.txt_station)
+        self.instance_station["width"] = 45
+        self.instance_station["font"] = self.font_input
+        self.instance_station.pack(side='left')
 
     def create_buttons(self, master=None):
         """Criando os botoes da aplicacao"""
@@ -83,18 +87,38 @@ class CreateInterface:
         self.mensagem.pack()
 
         self.btn_save_path = Button(self.btn_container, text="Salvar Path",
-                                    font=self.default_font, width=12)
+                                    font=self.default_font, width=12,
+                                    command=self.save_path_click)
         self.btn_save_path.pack(side='left')
 
         self.btn_change_arqid = Button(self.btn_container, text="Alterar ArqID",
-                                       font=self.default_font, width=12)
-        self.btn_change_arqid['command'] = self.change_arqid_click
+                                       font=self.default_font, width=12,
+                                       command=self.change_arqid_click)
         self.btn_change_arqid.pack(side='left')
 
     def change_arqid_click(self):
-        """Bot"""
+        """Funcao do botao Alterar ArqID ao ser clicado"""
         self.mensagem['text'] = ''
         resultado = change_arqid.alterar_arqid()
         self.mensagem['text'] = resultado
         importlib.reload(change_arqid) #gambiarra, descobrir outra forma de tratar isso
-        
+
+    def save_path_click(self):
+        """Funcao para salvar os caminhos em um banco de dados"""
+        path = self.path_repo.get()
+        server = self.instance_server.get()
+        station = self.instance_station.get()
+
+        change_arqid.save_settings(path, server, station)
+
+        self.mensagem['text'] = 'Informacoes salvas no banco de dados'
+        importlib.reload(change_arqid)
+
+    def load_paths(self):
+        """Retorna os dados do banco para mostrar na tela"""
+        row = change_arqid.get_settings()
+
+        if row != None:
+            self.path_repo.insert(0, row[1])
+            self.instance_server.insert(0, row[2])
+            self.instance_station.insert(0, row[3])

@@ -1,7 +1,7 @@
 
 """Executar a aplicacao change_arqid"""
 from tkinter import Tk
-from view import CreateInterface
+from templates.main_window import CreateInterface
 
 if __name__ == "__main__":
     APP = Tk()
