@@ -18,7 +18,22 @@ def get_settings():
     """Salva os novos caminhos no banco de dados"""
     return db.get_data()
 
-def alterar_arqid():
+def check_arqid_atual():
+    row = get_settings()
+
+    if row != None:
+        check_this_file = open(row[1] + r'\PDV\bin\Debug\ArqID.txt', 'r').readline()
+        server = row[2]
+        station = row[3]
+    else:
+        return "Os caminhos nao foram encontrados no banco de dados"
+
+    if server.rsplit('\\', 1)[-1] in check_this_file:
+        return server
+    else:
+        return station
+
+def alterar_arqid(alterar_etrade):
     """funcao para alterar o arqid"""
     row = get_settings()
 
@@ -27,7 +42,10 @@ def alterar_arqid():
         server = row[2]
         station = row[3]
     else:
-        return "Os caminhos nao foram encontrados na base de dados"
+        return "Os caminhos nao foram encontrados no banco de dados"
+
+    if alterar_etrade == 1:
+        SYSTEMS.append("ETrade")
 
     for app in SYSTEMS:
         arqid = row[1] + r"%s\bin\Debug\ArqID.txt" %(app)
@@ -41,7 +59,7 @@ def alterar_arqid():
                 sys.stdout.write(line.replace(station, server))
 
             txtbox = server
-    result = 'ArqID alterado para: %s' %(txtbox)
+    result = '%s' %(txtbox)
 
     if __name__ == '__main__':
         ctypes.windll.user32.MessageBoxW(0, result, "change arqid", 0)
@@ -50,4 +68,4 @@ def alterar_arqid():
     return result
 
 if __name__ == '__main__':
-    alterar_arqid()
+    alterar_arqid(0)

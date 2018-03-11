@@ -1,5 +1,5 @@
 """Tela da aplicaçao de alteracao de arqid"""
-from tkinter import Frame, Entry, Label, Button
+from tkinter import Frame, Entry, Label, Button, Checkbutton, IntVar
 import importlib
 import sys
 from modules import change_arqid
@@ -12,10 +12,12 @@ class CreateInterface:
     # Refatorarei essa classe no futuro. Dont be afraid may frendi
 
     def __init__(self, master=None):
+        self.etrade_checked = IntVar()
         self.default_font = ("Segoe", "11")
         self.font_input = ("Arial", "10")
         self.create_title(master)
         self.create_frames(master)
+        self.create_check_boxes(master)        
         self.create_buttons(master)
         self.load_paths()
 
@@ -26,12 +28,14 @@ class CreateInterface:
         self.lbl_titulo["pady"] = 10
         self.lbl_titulo.pack()
 
-        self.titulo = Label(self.lbl_titulo, text="Alterar a instância no ArqID.txt")
+        self.titulo = Label(self.lbl_titulo, text="Alterar instância no ArqID")
         self.titulo["font"] = ("Arial", "11", "bold")
         self.titulo.pack()
 
     def create_frames(self, master=None):
         """Criando os frames(txtedits) da aplicacao"""
+
+        #--------------------REPOSITORIO-----------------
 
         self.txt_path_repository = Frame(master)
         self.txt_path_repository["padx"] = 20
@@ -47,7 +51,7 @@ class CreateInterface:
         self.path_repo['highlightbackground'] = "green"
         self.path_repo.pack(side='left')
 
-        #--------------------------------------------
+        #---------------------SERVIDOR-----------------
 
         self.txt_server = Frame(master)
         self.txt_server["padx"] = 20
@@ -61,13 +65,13 @@ class CreateInterface:
         self.instance_server["font"] = self.font_input
         self.instance_server.pack(side='left')
 
-        #--------------------------------------------
+        #----------------------ESTAÇÃO------------------
 
         self.txt_station = Frame(master)
         self.txt_station["padx"] = 20
         self.txt_station.pack()
 
-        self.new_label = Label(self.txt_station, text="Estaçao     ", font=self.default_font)
+        self.new_label = Label(self.txt_station, text="Estação     ", font=self.default_font)
         self.new_label.pack(side='left')
 
         self.instance_station = Entry(self.txt_station)
@@ -83,23 +87,27 @@ class CreateInterface:
         self.btn_container["pady"] = 10
         self.btn_container.pack()
 
+        self.txt_status = Label(self.btn_container, text="STATUS")
+        self.txt_status["font"] = ("Arial", "9", "bold")
+        self.txt_status.pack()
         self.mensagem = Label(self.btn_container, text="", font=self.default_font)
         self.mensagem.pack()
 
-        self.btn_save_path = Button(self.btn_container, text="Salvar Path",
-                                    font=self.default_font, width=12,
-                                    command=self.save_path_click)
+        self.btn_save_path = Button(self.btn_container, text="Salvar Path", width=12, command=self.save_path_click)
         self.btn_save_path.pack(side='left')
 
-        self.btn_change_arqid = Button(self.btn_container, text="Alterar ArqID",
-                                       font=self.default_font, width=12,
-                                       command=self.change_arqid_click)
+        self.btn_change_arqid = Button(self.btn_container, text="Alterar ArqID", width=12, command=self.change_arqid_click)
         self.btn_change_arqid.pack(side='left')
+
+    def create_check_boxes(self, master=None): 
+        self.chk_etrade = Checkbutton(master, text='Alterar do ETrade', variable=self.etrade_checked, onvalue = 1, offvalue = 0)
+        self.chk_etrade["padx"] = 20
+        self.chk_etrade.pack(side='left')
 
     def change_arqid_click(self):
         """Funcao do botao Alterar ArqID ao ser clicado"""
         self.mensagem['text'] = ''
-        resultado = change_arqid.alterar_arqid()
+        resultado = change_arqid.alterar_arqid(self.etrade_checked.get())
         self.mensagem['text'] = resultado
         importlib.reload(change_arqid) #gambiarra, descobrir outra forma de tratar isso
 
@@ -111,7 +119,7 @@ class CreateInterface:
 
         change_arqid.save_settings(path, server, station)
 
-        self.mensagem['text'] = 'Informacoes salvas no banco de dados'
+        self.mensagem['text'] = 'Informações salvas'
         importlib.reload(change_arqid)
 
     def load_paths(self):
@@ -122,3 +130,5 @@ class CreateInterface:
             self.path_repo.insert(0, row[1])
             self.instance_server.insert(0, row[2])
             self.instance_station.insert(0, row[3])
+        
+        self.mensagem['text'] = change_arqid.check_arqid_atual()
