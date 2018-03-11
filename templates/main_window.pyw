@@ -2,7 +2,7 @@
 from tkinter import Frame, Entry, Label, Button, Checkbutton, IntVar
 import importlib
 import sys
-from modules import change_arqid
+from modules import metodos
 
 sys.path.append("..")
 
@@ -93,7 +93,9 @@ class CreateInterface:
         self.txt_status = Label(self.txt_container, text="Instância atual")
         self.txt_status["font"] = ("Arial", "9", "bold")
         self.txt_status.pack(side='top')
-        self.mensagem = Label(self.txt_container, text="")
+        
+        self.mensagem = Label(self.txt_container, text="", foreground="green")
+        self.mensagem["font"] = ("Arial", "9", "bold")
         self.mensagem.pack(side='right')
 
         self.btn_save_path = Button(self.btn_container, text="Salvar Path", width=12, command=self.save_path_click)
@@ -110,9 +112,12 @@ class CreateInterface:
     def change_arqid_click(self):
         """Funcao do botao Alterar ArqID ao ser clicado"""
         self.mensagem['text'] = ''
-        resultado = change_arqid.alterar_arqid(self.etrade_checked.get())
+        resultado = metodos.alterar_arqid(self.etrade_checked.get())
         self.mensagem['text'] = resultado
-        importlib.reload(change_arqid) #gambiarra, descobrir outra forma de tratar isso
+
+        self.refresh_msg_color(resultado)
+        
+        importlib.reload(metodos) #gambiarra, descobrir outra forma de tratar isso
 
     def save_path_click(self):
         """Funcao para salvar os caminhos em um banco de dados"""
@@ -120,18 +125,27 @@ class CreateInterface:
         server = self.instance_server.get()
         station = self.instance_station.get()
 
-        change_arqid.save_settings(path, server, station)
+        metodos.save_settings(path, server, station)
 
         self.mensagem['text'] = 'Informações salvas'
-        importlib.reload(change_arqid)
+        self.mensagem["foreground"] = "red"
+        importlib.reload(metodos)
 
     def load_paths(self):
         """Retorna os dados do banco para mostrar na tela"""
-        row = change_arqid.get_settings()
+        row = metodos.get_settings()
 
         if row != None:
             self.path_repo.insert(0, row[1])
             self.instance_server.insert(0, row[2])
             self.instance_station.insert(0, row[3])
-        
-        self.mensagem['text'] = change_arqid.check_arqid_atual()
+
+        resultado = metodos.check_arqid_atual()
+        self.mensagem['text'] = resultado
+        self.refresh_msg_color(resultado)
+
+    def refresh_msg_color(self, result: str):
+        if 'Verifique' in result:
+            self.mensagem["foreground"] = "red"
+        else:
+            self.mensagem["foreground"] = "green"
