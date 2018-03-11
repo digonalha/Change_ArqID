@@ -28,7 +28,7 @@ class CreateInterface:
         self.lbl_titulo["pady"] = 10
         self.lbl_titulo.pack()
 
-        self.titulo = Label(self.lbl_titulo, text="Alterar instância no ArqID")
+        self.titulo = Label(self.lbl_titulo, text="Alterar Instância")
         self.titulo["font"] = ("Arial", "11", "bold")
         self.titulo.pack()
 
@@ -82,22 +82,25 @@ class CreateInterface:
     def create_buttons(self, master=None):
         """Criando os botoes da aplicacao"""
 
+        self.txt_container = Frame(master)
+        self.txt_container.pack()
+
         self.btn_container = Frame(master)
         self.btn_container["padx"] = 20
         self.btn_container["pady"] = 10
         self.btn_container.pack()
 
-        self.txt_status = Label(self.btn_container, text="STATUS")
+        self.txt_status = Label(self.txt_container, text="Instância atual")
         self.txt_status["font"] = ("Arial", "9", "bold")
-        self.txt_status.pack()
-        self.mensagem = Label(self.btn_container, text="", font=self.default_font)
-        self.mensagem.pack()
+        self.txt_status.pack(side='top')
+        self.mensagem = Label(self.txt_container, text="")
+        self.mensagem.pack(side='right')
 
         self.btn_save_path = Button(self.btn_container, text="Salvar Path", width=12, command=self.save_path_click)
         self.btn_save_path.pack(side='left')
 
         self.btn_change_arqid = Button(self.btn_container, text="Alterar ArqID", width=12, command=self.change_arqid_click)
-        self.btn_change_arqid.pack(side='left')
+        self.btn_change_arqid.pack(side='right')
 
     def create_check_boxes(self, master=None): 
         self.chk_etrade = Checkbutton(master, text='Alterar do ETrade', variable=self.etrade_checked, onvalue = 1, offvalue = 0)

@@ -5,7 +5,8 @@ from templates.main_window import CreateInterface
 
 if __name__ == "__main__":
     APP = Tk()
-    APP.title("Change ArqID - v0.1")
+    APP.title("Alterar ArqID")
+    APP.iconbitmap('icone.ico')
     X = (APP.winfo_screenwidth() - APP.winfo_reqwidth()) / 2
     Y = (APP.winfo_screenheight() - APP.winfo_reqheight()) / 2
     APP.geometry("+%d+%d" % (X, Y))

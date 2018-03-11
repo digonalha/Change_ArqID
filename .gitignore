@@ -1,1 +1,5 @@
-__pycache__/change_arqid.cpython-36.pyc
+.git
+git
+__pycache__
+modules/__pycache__
+templates/__pycache__
