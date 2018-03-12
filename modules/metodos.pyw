@@ -47,7 +47,7 @@ def change_line_on_file(arqid: str, instancia: str):
     from_file = open(arqid) 
     line = from_file.readline()
 
-    line = instancia + '\n' # make any changes to line here
+    line = instancia + '\n'
 
     to_file = open(arqid,mode="w")
     to_file.write(line)
