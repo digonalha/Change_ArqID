@@ -1,3 +1,3 @@
 # Change ArqID
 
-Ferramenta para alterar o arqid.txt Criada para dar suporte ao desenvolvedor do bridge, para facilitar  e alternância das instâncias utilizadas para depuração.
+Criada para dar suporte ao desenvolvedor do módulo Bridge, facilitando a alternância das instâncias utilizadas desenvolvimento e depuração.
