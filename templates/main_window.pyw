@@ -6,7 +6,7 @@ from modules import metodos
 
 sys.path.append("..")
 
-class CreateInterface:
+class MainWindow:
     """Montando a tela"""
     # pylint: disable=too-many-instance-attributes
     # Refatorarei essa classe no futuro. Dont be afraid may frendi
@@ -97,7 +97,7 @@ class CreateInterface:
         
         self.mensagem = Label(self.txt_container, text="", foreground="green")
         self.mensagem["font"] = ("Arial", "9", "bold")
-        self.mensagem.pack(side='right')
+        self.mensagem.pack(anchor="center")
 
         self.btn_save_path = Button(self.btn_container, text="Salvar Path", width=12, command=self.save_path_click)
         self.btn_save_path.pack(side='left')

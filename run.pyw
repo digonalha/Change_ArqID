@@ -1,7 +1,7 @@
 
 """Executar a aplicacao change_arqid"""
 from tkinter import Tk
-from templates.main_window import CreateInterface
+from templates.main_window import MainWindow
 
 if __name__ == "__main__":
     APP = Tk()
@@ -11,5 +11,5 @@ if __name__ == "__main__":
     Y = (APP.winfo_screenheight() - APP.winfo_reqheight()) / 2
     APP.geometry("+%d+%d" % (X, Y))
     APP.resizable(0, 0)
-    CreateInterface(APP)
+    MainWindow(APP)
     APP.mainloop()
