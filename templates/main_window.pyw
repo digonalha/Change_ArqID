@@ -13,6 +13,7 @@ class CreateInterface:
 
     def __init__(self, master=None):
         self.etrade_checked = IntVar()
+        self.gourmet_checked = IntVar()
         self.default_font = ("Segoe", "11")
         self.font_input = ("Arial", "10")
         self.create_title(master)
@@ -105,14 +106,20 @@ class CreateInterface:
         self.btn_change_arqid.pack(side='right')
 
     def create_check_boxes(self, master=None): 
-        self.chk_etrade = Checkbutton(master, text='Alterar do ETrade', variable=self.etrade_checked, onvalue = 1, offvalue = 0)
-        self.chk_etrade["padx"] = 20
+        self.chk_container = Frame(master)
+        self.chk_container.pack()
+
+        self.chk_etrade = Checkbutton(self.chk_container, text='Alterar no ETrade', variable=self.etrade_checked, onvalue = 1, offvalue = 0)
+        self.chk_etrade["padx"] = 5
         self.chk_etrade.pack(side='left')
+        self.chk_gourmet = Checkbutton(self.chk_container, text='Alterar no Gourmet', variable=self.gourmet_checked, onvalue = 1, offvalue = 0)
+        self.chk_gourmet["padx"] = 20
+        self.chk_gourmet.pack(side='right')
 
     def change_arqid_click(self):
         """Funcao do botao Alterar ArqID ao ser clicado"""
         self.mensagem['text'] = ''
-        resultado = metodos.alterar_arqid(self.etrade_checked.get())
+        resultado = metodos.alterar_arqid(alterar_etrade = self.etrade_checked.get(), alterar_gourmet = self.gourmet_checked.get())
         self.mensagem['text'] = resultado
 
         self.refresh_msg_color(resultado)

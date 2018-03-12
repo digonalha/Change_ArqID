@@ -1,5 +1,7 @@
 .git
 git
+settings
+settings.db
 __pycache__/
 modules/__pycache__/
 templates/__pycache__/

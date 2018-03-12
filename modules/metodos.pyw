@@ -2,6 +2,7 @@
 import fileinput
 import sys
 import ctypes
+import shutil
 import db
 
 sys.path.append("..")
@@ -23,8 +24,7 @@ def check_arqid_atual():
         row = get_settings()
 
         if row != None:
-            path_repo = fix_path(row[1])
-            check_this_file = open(path_repo + r'\PDV\bin\Debug\ArqID.txt', 'r').readline()           
+            check_this_file = open(fix_path(row[1]) + r'\PDV\bin\Debug\ArqID.txt', 'r').readline()           
             server = row[2]
             station = row[3]
         else:
@@ -43,14 +43,23 @@ def fix_path(caminho: str):
     else:
         return caminho + '\\'     
 
-def alterar_arqid(alterar_etrade):
+def change_line_on_file(arqid: str, instancia: str):
+    from_file = open(arqid) 
+    line = from_file.readline()
+
+    line = instancia + '\n' # make any changes to line here
+
+    to_file = open(arqid,mode="w")
+    to_file.write(line)
+    shutil.copyfileobj(from_file, to_file)
+
+def alterar_arqid(alterar_etrade: int, alterar_gourmet: int):
     """funcao para alterar o arqid"""
     try:
         row = get_settings()
 
         if row != None:
-            path_repo = fix_path(row[1])
-            check_this_file = open(path_repo + r'\PDV\bin\Debug\ArqID.txt', 'r').readline()         
+            check_this_file = open(fix_path(row[1]) + r'\PDV\bin\Debug\ArqID.txt', 'r').readline()         
             server = row[2]
             station = row[3]
         else:
@@ -58,20 +67,17 @@ def alterar_arqid(alterar_etrade):
 
         if alterar_etrade == 1:
             SYSTEMS.append("ETrade")
-
+        if alterar_gourmet == 1:
+            SYSTEMS.append("Gourmet")
+        
         for app in SYSTEMS:
-            arqid = path_repo + r"%s\bin\Debug\ArqID.txt" %(app)
+            arqid = fix_path(row[1]) + r"%s\bin\Debug\ArqID.txt" %(app)
             if server.rsplit('\\', 1)[-1] in check_this_file:
-                for line in fileinput.input(arqid, inplace=True):
-                    sys.stdout.write(line.replace(server, station))
-
-                txtbox = station
+                change_line_on_file(arqid, station)
+                result = station
             else:
-                for line in fileinput.input(arqid, inplace=True):
-                    sys.stdout.write(line.replace(station, server))
-
-                txtbox = server
-        result = '%s' %(txtbox)
+                change_line_on_file(arqid, server)
+                result = server
 
         if __name__ == '__main__':
             ctypes.windll.user32.MessageBoxW(0, result, "change arqid", 0)
@@ -82,4 +88,4 @@ def alterar_arqid(alterar_etrade):
         return 'Verifique o caminho do repositório!'
     
 if __name__ == '__main__':
-    alterar_arqid(0)
+    alterar_arqid(0, 0)
