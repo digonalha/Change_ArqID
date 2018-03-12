@@ -154,5 +154,7 @@ class CreateInterface:
     def refresh_msg_color(self, result: str):
         if 'Verifique' in result:
             self.mensagem["foreground"] = "red"
+        elif 'Os caminhos' in result:
+            self.mensagem["foreground"] = "red"
         else:
             self.mensagem["foreground"] = "green"

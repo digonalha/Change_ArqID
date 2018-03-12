@@ -28,7 +28,7 @@ def check_arqid_atual():
             server = row[2]
             station = row[3]
         else:
-            return "Os caminhos nao foram encontrados no banco de dados"
+            return "Os caminhos não foram encontrados no banco de dados"
 
         if server.rsplit('\\', 1)[-1] in check_this_file:
             return server
@@ -63,7 +63,7 @@ def alterar_arqid(alterar_etrade: int, alterar_gourmet: int):
             server = row[2]
             station = row[3]
         else:
-            return "Os caminhos nao foram encontrados no banco de dados"
+            return "Os caminhos não foram encontrados no banco de dados"
 
         if alterar_etrade == 1:
             SYSTEMS.append("ETrade")
