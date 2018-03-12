@@ -9,8 +9,6 @@ sys.path.append("..")
 
 SYSTEMS = ['PDV', 'UpdateAutomatic']
 
-REMAIND_TEXT = "sa\nsenha\n30"
-
 def save_settings(path, server, station):
     """Salva os novos caminhos no banco de dados"""
     db.save_data(path, server, station)
