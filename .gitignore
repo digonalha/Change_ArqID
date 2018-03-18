@@ -2,6 +2,8 @@
 git
 settings
 settings.db
+.vscode
+vscode
 __pycache__/
 modules/__pycache__/
 templates/__pycache__/
