@@ -1,7 +1,7 @@
 """Tela da aplicaçao de alteracao de arqid"""
 import importlib
 import sys
-from tkinter import Button, Checkbutton, Entry, Frame, IntVar, Label
+from tkinter import Button, Checkbutton, Entry, Frame, IntVar, Label, ttk
 from modules import metodos
 
 sys.path.append("..")
@@ -12,26 +12,47 @@ class MainWindow:
     # pylint: disable=too-many-instance-attributes
 
     def __init__(self, master=None):
+
         self.etrade_checked = IntVar()
         self.gourmet_checked = IntVar()
+        self.n = ttk.Notebook(master)
         self.default_font = ("Segoe", "11")
         self.font_input = ("Arial", "10")
-        self.create_title(master)
-        self.create_frames(master)
-        self.create_check_boxes(master)
-        self.create_buttons(master)
+        self.create_tab_changearqid(master)
+        self.create_tab_backupbanco(master)
+        self.n.pack()
+
+    def create_tab_changearqid(self, master=None):
+        f1 = Frame(self.n)
+        self.n.add(f1, text='Alterar ArqID')
+        self.create_title("Alterar instância no ArqID", f1)
+        self.create_frames_arqid(f1)
+        self.create_check_boxes(f1)
+        self.create_buttons(f1)
         self.load_paths()
 
-    def create_title(self, master=None):
+    def create_tab_backupbanco(self, master=None):
+        f2 = Frame(self.n)
+        self.n.add(f2, text='Backup Banco')
+        self.create_title("Backup do banco de dados", f2)
+        self.create_frames_backup(f2)
+
+# region Comum
+
+    def create_title(self, title: str, master=None):
         """Criando o titulo da aplicacao"""
         self.lbl_titulo = Frame(master)
         self.lbl_titulo["pady"] = 10
         self.lbl_titulo.pack()
-        self.titulo = Label(self.lbl_titulo, text="Alterar Instância")
+        self.titulo = Label(self.lbl_titulo, text=title)
         self.titulo["font"] = ("Arial", "11", "bold")
         self.titulo.pack()
 
-    def create_frames(self, master=None):
+# endregion
+
+# region Alterar ArqID
+
+    def create_frames_arqid(self, master=None):
         """Criando os frames(txtedits) da aplicacao"""
 
         # --------------------REPOSITORIO-----------------
@@ -177,3 +198,36 @@ class MainWindow:
             self.mensagem["foreground"] = "red"
         else:
             self.mensagem["foreground"] = "green"
+
+# endregion
+
+# region Backup Banco
+    def create_frames_backup(self, master=None):
+        """Criando os frames(txtedits) da aplicacao"""
+
+        self.txt_origem = Frame(master)
+        self.txt_origem["padx"] = 20
+        self.txt_origem.pack()
+
+        self.new_label = Label(self.txt_origem, text="Origem     ",
+                               font=self.default_font)
+        self.new_label.pack(side='left')
+
+        self.path_origem = Entry(self.txt_origem)
+        self.path_origem["width"] = 45
+        self.path_origem["font"] = self.font_input
+        self.path_origem.pack(side='left')
+
+        self.txt_destino = Frame(master)
+        self.txt_destino["padx"] = 20
+        self.txt_destino.pack()
+
+        self.new_label = Label(self.txt_destino, text="Destino    ",
+                               font=self.default_font)
+        self.new_label.pack(side='left')
+
+        self.path_destino = Entry(self.txt_destino)
+        self.path_destino["width"] = 45
+        self.path_destino["font"] = self.font_input
+        self.path_destino.pack(side='left')
+# endregion

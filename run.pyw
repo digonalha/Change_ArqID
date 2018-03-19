@@ -5,7 +5,7 @@ from templates.main_window import MainWindow
 
 if __name__ == "__main__":
     APP = Tk()
-    APP.title("Alterar ArqID")
+    APP.title("Canivete Suiço")
     APP.iconbitmap('icone.ico')
     X = (APP.winfo_screenwidth() - APP.winfo_reqwidth()) / 2
     Y = (APP.winfo_screenheight() - APP.winfo_reqheight()) / 2
