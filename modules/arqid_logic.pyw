@@ -1,10 +1,9 @@
-"""Editor de arqId"""
+"""BLL para alterção do ArqID"""
 import fileinput
 import sys
 import ctypes
 import shutil
-import db
-
+from DAL import arqid_dal
 
 sys.path.append("..")
 
@@ -13,12 +12,12 @@ SYSTEMS = ['PDV', 'UpdateAutomatic']
 
 def save_settings(path, server, station):
     """Salva os novos caminhos no banco de dados"""
-    db.save_data(path, server, station)
+    arqid_dal.save_data(path, server, station)
 
 
 def get_settings():
     """Salva os novos caminhos no banco de dados"""
-    return db.get_data()
+    return arqid_dal.get_data()
 
 
 def check_arqid_atual():

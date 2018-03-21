@@ -1,4 +1,3 @@
-
 """Executar a aplicacao change_arqid"""
 from tkinter import Tk
 from templates.main_window import MainWindow
