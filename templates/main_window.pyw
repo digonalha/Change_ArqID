@@ -165,7 +165,7 @@ class MainWindow:
                     alterar_gourmet=self.gourmet_checked.get())
         self.mensagem['text'] = resultado
 
-        self.refresh_msg_color(resultado)
+        self.refresh_msg_color(resultado, self.mensagem)
         # gambiarra, descobrir# outra forma de tratar isso
         importlib.reload(arqid_logic)
 
@@ -192,15 +192,17 @@ class MainWindow:
 
         resultado = arqid_logic.check_arqid_atual()
         self.mensagem['text'] = resultado
-        self.refresh_msg_color(resultado)
+        self.refresh_msg_color(resultado, self.mensagem)
 
-    def refresh_msg_color(self, result: str):
+    def refresh_msg_color(self, result: str, obj: Label):
+        if 'O serviço está parado' in result:
+            obj["foreground"] = "red"
         if 'Verifique' in result:
-            self.mensagem["foreground"] = "red"
+            obj["foreground"] = "red"
         elif 'Os caminhos' in result:
-            self.mensagem["foreground"] = "red"
+            obj["foreground"] = "red"
         else:
-            self.mensagem["foreground"] = "green"
+            obj["foreground"] = "green"
 
 # endregion
 
@@ -275,7 +277,7 @@ class MainWindow:
         resultado = backup_logic.make_backup()
         self.mensagem_backup['text'] = resultado
 
-        self.refresh_msg_color(resultado)
+        self.refresh_msg_color(resultado, self.mensagem_backup)
         # gambiarra, descobrir# outra forma de tratar isso
         importlib.reload(arqid_logic)
 
@@ -298,8 +300,9 @@ class MainWindow:
             self.path_origem.insert(0, row[1])
             self.path_destino.insert(0, row[2])
 
-        # resultado = arqid_logic.check_arqid_atual()
-        # self.mensagem_backup['text'] = resultado
-        # self.refresh_msg_color(resultado)
+        resultado = backup_logic.get_status_service()
+        self.mensagem_backup['text'] = resultado
+        self.refresh_msg_color(resultado, self.mensagem_backup)
+ 
 
 # endregion

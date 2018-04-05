@@ -4,6 +4,7 @@ import sys
 import os
 import ctypes
 import shutil
+import win32serviceutil
 from DAL import backup_dal
 
 sys.path.append("..")
@@ -26,15 +27,6 @@ def fix_path(caminho: str):
         return caminho + '\\'
 
 
-def make_backup_as_admin():
-    if is_admin():
-        make_backup()
-    else:
-        ctypes.windll.shell32.ShellExecuteW(None, "runas",
-                                            sys.executable, "", None, 1)
-        make_backup()
-
-
 def make_backup():
     row = get_settings()
 
@@ -47,21 +39,17 @@ def make_backup():
     bd = origem + 'Etrade.mdf'
     log = origem + 'Etrade_log.ldf'
 
-    toggle_service('MSSQL$SQL2014', 'stop')
+    win32serviceutil.StopService('Elan Service')
     shutil.copy2(bd, destino)
     shutil.copy2(log, destino)
-    toggle_service('MSSQL$SQL2014', 'start')
+    # win32serviceutil.StartService('Elan Service')
 
     return 'Backup restaurado!'
 
 
-def toggle_service(name, action):
-        cmd = 'runas /noprofile /user:administrator "net {} \'{}\'"'.format(action, name)
-        os.system(cmd)
+def get_status_service():
+    if win32serviceutil.QueryServiceStatus('Elan Service')[1] == 4:
+        return "O serviço esta em execução"        
+    else:
+        return "O serviço está parado"
 
-
-def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
-        return False
